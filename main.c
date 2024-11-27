@@ -112,17 +112,45 @@ void splitStrings(FILE *fp) {
     fclose(fp);
 }
 
-//readInputMQTT function here
-void readInputMQTT(void* context, char* incomingTopic, int topicLen, MQTTClient_message* message) {
-    printf("Message arrived on topic: %s\n", incomingTopic);
-    printf("Message payload: %s\n", message->payload);
-    MQTTClient_freeMessage(&message);
-    MQTTClient_free(incomingTopic);
+//delivered function: used when a message is succesfully delivered
+void delivered(void* context, MQTTClient_deliveryToken dt) {
+    printf("Message with token value %d delivered.\n", dt);
+    printf( "-----------------------------------------------\n" );
+    deliveredToken = dt;
 }
+//readInputMQTT function here
+int readInputMQTT(void* context, char* topic1, int topicLen, MQTTClient_message* message) {
+    char *errorInput = message ->payload;
+    char errorOutput[errorOutput_LEN] = "";
 
-//format_incomingMSG function here
+    printf("Message arrived: <%s>\n", errorInput);
+    
+    sprintf(errorOutput, "%s", errorInput);
+    printf("Message arrived: <%s>\n", errorOutput);
 
-//searchCorrMSG function here
+    //create new client to publish errorOutput message
+    MQTTClient client = (MQTTClient)context;
+    MQTTClient_message pubmsg = MQTTClient_message_initializer;
+    MQTTClient_deliveryToken token;
+
+    pubmsg.payload = errorOutput;
+    pubmsg.payloadlen = strlen(errorOutput);
+    pubmsg.qos = QoS;
+    pubmsg.retained = 0;
+
+    //Publish errorOutput message on topic2
+    MQTTClient_publishMessage(client, topic2, &pubmsg, &token);
+    printf("Publishing to topic %s\n", topic2);
+
+    int rc = MQTTClient_waitForCompletion(client, token, timeout );
+    printf("Message with delivery token %d delivered, rc=%d\n", token, rc);
+    printf( "Msg out:\t<%s>\n", errorOutput); 
+
+    MQTTClient_freeMessage(&message);
+    MQTTClient_free(topic1)
+
+    return 1;
+}
 
 //dateTimestamp function here: DD/MM/YYYY HH:MM:SS
 void dateTimestamp() {
