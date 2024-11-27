@@ -2,7 +2,7 @@
 
 #Declare the variables
 HOST=192.168.0.101
-TOPIC=incomingMQTT
+TOPIC=MB_subMQTT
 SLEEP=1
 PROG_NAME=HOEGAARDEN
 SEV_CODE=1
