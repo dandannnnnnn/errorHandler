@@ -119,7 +119,7 @@ void delivered(void* context, MQTTClient_deliveryToken dt) {
     deliveredToken = dt;
 }
 //readInputMQTT function here
-int readInputMQTT(void* context, char* topic1, int topicLen, MQTTClient_message* message) {
+int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_message* message) {
     char *errorInput = message ->payload;
     char errorOutput[errorOutput_LEN] = "";
 
