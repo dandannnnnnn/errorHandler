@@ -147,9 +147,14 @@ int readInputMQTT(void* context, char* topic1, int topicLen, MQTTClient_message*
     printf( "Msg out:\t<%s>\n", errorOutput); 
 
     MQTTClient_freeMessage(&message);
-    MQTTClient_free(topic1)
+    MQTTClient_free(topic1);
 
     return 1;
+}
+
+void connectionLost(void *context, char *cause) {
+    printf("Connection lost!\n");
+    printf("    cause: %s\n", cause);
 }
 
 //dateTimestamp function here: DD/MM/YYYY HH:MM:SS
