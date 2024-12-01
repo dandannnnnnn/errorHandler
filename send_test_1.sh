@@ -1,7 +1,7 @@
 #! /bin/bash
 
 #Declare the variables
-HOST=192.168.0.101
+HOST=192.168.0.5
 TOPIC=MB_subMQTT
 SLEEP=1
 PROG_NAME=HOEGAARDEN
