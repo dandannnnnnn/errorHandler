@@ -1,3 +1,4 @@
+//All variable names
 #define IPaddress     "tcp://192.168.0.101:1883" //IP-address:Port
 #define QoS         1
 
