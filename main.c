@@ -179,32 +179,7 @@ void dateTimestamp() {
 }
 //format_outgoingMSG function here
 void format_outgoingMSG(char *line, char *errorOutput) {
-        char timestamp[timestampLEN] = "";
-    char errorCode_field[errorCode_LEN] = "";
-    char errorMSG_field[errorMSG_LEN] = "";
-    char sevCode_field[sevCode_LEN] = "";
-
-    char *token = strtok(line, ";");
-    if (token != NULL) {
-        strncpy(sevCode_field, token, sevCode_LEN - 1);
-        sevCode_field[sevCode_LEN - 1] = '\0';
-    }
-
-    token = strtok(NULL, ";");
-    if (token != NULL) {
-        strncpy(errorCode_field, token, errorCode_LEN - 1);
-        errorCode_field[errorCode_LEN - 1] = '\0';
-    }
-
-    token = strtok(NULL, ";");
-    if (token != NULL) {
-        strncpy(errorMSG_field, token, errorMSG_LEN - 1);
-        errorMSG_field[errorMSG_LEN - 1] = '\0';
-    }
-
-    dateTimestamp(timestamp); // Verify the correct usage of this function
-
-    int len = snprintf(errorOutput, errorOutput_LEN, "%s;%s;DUVEL;%s;%s", timestamp, sevCode_field, errorCode_field, errorMSG_field);
+    
 }
 //optionFileLanguage function here
 
