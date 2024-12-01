@@ -147,7 +147,7 @@ int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_messa
     printf( "Msg out:\t<%s>\n", errorOutput); 
 
     MQTTClient_freeMessage(&message);
-    MQTTClient_free(topic1);
+    MQTTClient_free(topicName);
 
     return 1;
 }
