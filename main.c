@@ -175,23 +175,11 @@ void dateTimestamp() {
     sprintf(minute, "%02d", t->tm_min);
     sprintf(second, "%02d", t->tm_sec);
 
-    strcpy(currentDate, day);
-    strcat(currentDate, "/");
-    strcat(currentDate, month);
-    strcat(currentDate, "/");
-    strcat(currentDate, year);
-    strcat(currentDate, " ");
-    strcat(currentDate, minute);
-    strcat(currentDate, ":");
-    strcat(currentDate, hour);
-    strcat(currentDate, ":");
-    strcat(currentDate, second);
-
-    printf("%s\n", currentDate);
+    sprintf(dateTimestamp, "%s/%s/%s %s:%s:%s", day, month, year, hour, minute, second);
 }
 //format_outgoingMSG function here
 void format_outgoingMSG(char *line, char *errorOutput) {
-    char timestamp[timestampLEN] = "";
+        char timestamp[timestampLEN] = "";
     char errorCode_field[errorCode_LEN] = "";
     char errorMSG_field[errorMSG_LEN] = "";
     char sevCode_field[sevCode_LEN] = "";
@@ -213,9 +201,10 @@ void format_outgoingMSG(char *line, char *errorOutput) {
         strncpy(errorMSG_field, token, errorMSG_LEN - 1);
         errorMSG_field[errorMSG_LEN - 1] = '\0';
     }
-    dateTimestamp(timestamp);
 
-    snprintf(errorOutput, errorOutput_LEN, "%s;%s;DUVEL;%s;%s", timestamp, sevCode_field, errorCode_field, errorMSG_field);
+    dateTimestamp(timestamp); // Verify the correct usage of this function
+
+    int len = snprintf(errorOutput, errorOutput_LEN, "%s;%s;DUVEL;%s;%s", timestamp, sevCode_field, errorCode_field, errorMSG_field);
 }
 //optionFileLanguage function here
 
