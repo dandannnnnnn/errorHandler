@@ -179,7 +179,32 @@ void dateTimestamp() {
 }
 //format_outgoingMSG function here
 void format_outgoingMSG(char *line, char *errorOutput) {
-    
+    char dateTimestamp[timestampLEN] = "";
+    char error_field[][errorMSG_LEN] = {"", "", "", ""};
+
+    char sevCode_error[sevCode_LEN + 1] = "";
+    char errorMSG[errorMSG_LEN] = "";
+    char errormsg2[errorMSG_LEN + errorParam_LEN] = "";
+
+    int totalError_fields = sizeof(error_field) /sizeof(error_field[0]);
+    int sevcode = 0;
+
+    strcpy(errorOutput, "");
+    errorFields(line, error_field, totalError_fields);
+    addTime(dateTimestamp);
+
+    sevcode = atoi(error_field[sevCode_field]);
+    if ((sevcode >= 1) && (sevcode <= 4)) {
+        sprintf(sevCode_error, "SEV %d", sevcode);
+    } else {
+        sprintf(sevCode_error, "SEV 4"); //incase sevcode isn't between 1 and 4
+    }
+
+    current = head;
+    if (searchList(&current, error_field[errorCode_field]) == 0) {
+        
+    }
+
 }
 //optionFileLanguage function here
 
