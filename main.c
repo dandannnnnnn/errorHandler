@@ -9,6 +9,7 @@
 #include <string.h>
 #include <MQTTClient.h> //remove '//' when using RPi
 #include "settingErrHandler.h" //file with array definitions and length
+#include "send_mqtt_msg.c" //file with MQTT functions
 
 volatile MQTTClient_deliveryToken deliveredToken;
 
@@ -17,8 +18,6 @@ struct tbl {
     char errorText[errorMSG_LEN + 1];
     struct tbl *next; //links multiple struct tbls together ==> linked list
 };
-
-
 
 struct tbl *head = NULL; //declaring a pointer and not a value
 struct tbl *current = NULL;
