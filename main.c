@@ -111,9 +111,8 @@ int extractErrText(char *line, char *errorText) {
     }
 }
 
-
-//splitStrings function here
-int readingFile(char *fileName) {
+//readingFile function here
+int readingFile(const char *fileName) {
     FILE *fp;
     int count = 0;
     char line[1024] = "";
@@ -222,7 +221,7 @@ int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_messa
 
 void connectionLost(void *context, char *cause) {
     printf("Connection lost!\n");
-    printf("    cause: %s\n", cause);
+    printf("    no connection: %s\n", noConnection);
 }
 
 //dateTimestamp function here: DD/MM/YYYY HH:MM:SS
@@ -330,7 +329,7 @@ void defaultSettings() {
         }
     }
  }
-}
+
 
 //main function here
 int main(int argc, char* argv[]) {
