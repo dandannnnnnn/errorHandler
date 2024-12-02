@@ -319,6 +319,33 @@ void defaultSettings() {
 
 //main function here
 int main(int argc, char* argv[]) {
+
+    //Asking user which language they want to use
+    char fileName[fileName_LEN] = "";
+    int languageAnswer;
+
+    printf("Choose the language:\n");
+    printf("1. English\n");
+    printf("2. French\n");
+    printf("3. Dutch\n");
+    printf("Enter your choice (1-3): ");
+    scanf("%d", &languageAnswer);
+
+    switch (languageAnswer) {
+        case 1:
+            sprintf(fileName, "%sEN.txt", fileName);
+            break;
+        case 2:
+            sprintf(fileName, "%sFR.txt", fileName);
+            break;
+        case 3:
+            sprintf(fileName, "%sNL.txt", fileName);
+            break;
+        default:
+            printf("Invalid choice. Default language will be used\n");
+            sprintf(fileName, "%sEN.txt", fileName);
+            break;
+    }
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     int rc;
