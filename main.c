@@ -287,12 +287,14 @@ void format_outgoingMSG(char *line, char *errorOutput) {
     errorFields(line, error_field, totalError_fields);
     addTime(dateTimestamp);
 
-    sevcode = atoi(error_field[sevCode_field]);
+   if (error_field[0] != NULL && strlen(error_field[0] > 0)) {
+    sevcode = atoi(error_field[0]);
     if ((sevcode >= 1) && (sevcode <= 4)) {
         sprintf(sevCode_error, "SEV %d", sevcode);
     } else {
-        sprintf(sevCode_error, "SEV 4"); //incase sevcode isn't between 1 and 4
+        sprintf(sevCode_error, "SEV4"); //incase sevcode isn't in the range of 1-4
     }
+   }
 
     current = head;
     if (searchList(&current, error_field[errorCode_field]) == 0) {
