@@ -80,35 +80,77 @@ void searchErrorCode(char *errorCode) {
     printf("Error code not found.");
 }
 
+//extractErrCode function here
+int extractErrCode(char *line, char *errorCode) {
+    int i = 0;
+
+    while ((line[i] != '\t') && (line[i] != '\n') ) {
+        errorCode[i] = line[i];
+        i++;
+        if ( i > errorCode_LEN) {
+            return 0;
+        }
+        errorCode[i] = '\0';
+    }
+}
+
+//extractErrText function here
+int extractErrText(char *line, char *errorText) {
+    int i = errorCode_LEN + 1;
+    int z = 0;
+
+    while (line[i] != '\n') {
+        errorText[z] = line[i];
+        i++;
+        z++;
+        if ( i > errorMSG_LEN) {
+            return 0;
+        }
+        errorText[z] = '\0';
+    }
+}
+
+
 //splitStrings function here
-void splitStrings(FILE *fp) {
-    char line[150];
-    char *token, *rest;
+void readingFile(char *fileName) {
+    FILE *fp;
+    int count = 0;
+    char line[1024] = "";
+    char errorCode[errorCode_LEN + 1] = "";
+    char errorText[errorMSG_LEN + 1] = "";
 
-    if (fgets(line, sizeof(line), fp)) {
-        if (line[0] != '#') {
-            printf("%s", line);
-        }
+    struct tbl *linklist = (struct tbl*)malloc(sizeof(struct tbl));
+    head = linklist;
+    head -> next = NULL;
+
+    fp = fopen(fileName, "r");
+    if (fp == NULL) {
+        printf("Error opening file.");
+        exit(1);
     }
-
-    while (fgets(line, sizeof(line), fp)) {
-        if (line[0] != '#') {
-            char fields[2][50];
-            int fieldCount = 0;
-
-            rest = line;
-            while ((token = strtok_r(rest, "\t", &rest)) != NULL && fieldCount < 7) {
-                strcpy(fields[fieldCount], token);
-                fieldCount++;
+    count = 0;
+    while(fgets(line, sizeof(line), fp) != NULL) {
+        if(line[0] != '#') {
+            count++;
+            if (extractErrCode(line, errorCode) == 0) {
+                printf("Incorrect error code on line %d of file %s\n", count, fileName);
+                return 0;
             }
-            if (fieldCount == 2) {
-                insert_first(fields[0], fields[1]);
+            if (extractErrText(line, errorText) == 0) {
+                printf("Incorrect error text on line %d of file %s\n", count, fileName);
+                return 0;
+            }
+            if (count == 1) {
+                insert_first(errorCode, errorText);
+                current = head;
             } else {
-                printf("Error: %d fields instead of 2 fields!\n", fieldCount);
+                insert_next(current, errorCode, errorText);
+                current = current -> next;
             }
         }
+        fclose(fp);
+        return 1;
     }
-    fclose(fp);
 }
 
 //delivered function: used when a message is succesfully delivered
@@ -177,6 +219,19 @@ void dateTimestamp() {
 
     sprintf(dateTimestamp, "%s/%s/%s %s:%s:%s", day, month, year, hour, minute, second);
 }
+
+//parameterYES function here
+int parameterYES(char *line) {
+    int i = 0;
+
+    while (line[i] != '\0') {
+        if ((line[i] == '%') && (line[i+1] == 's')) {
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}
 //format_outgoingMSG function here
 void format_outgoingMSG(char *line, char *errorOutput) {
     char dateTimestamp[timestampLEN] = "";
@@ -202,11 +257,35 @@ void format_outgoingMSG(char *line, char *errorOutput) {
 
     current = head;
     if (searchList(&current, error_field[errorCode_field]) == 0) {
-        
+        strcpy(errorMSG, errorMSG_DEFAULT);
+    } else {
+        strcpy(errorMSG, current->errorText);
+    }
+    if (parameterYES(errorMSG)) {
+        sprintf(errormsg2, errorMSG, error_field[errorParam_field]);
+    } else {
+        sprintf(errormsg2, "%s", errorMSG);
     }
 
+    //formatting the message
+    sprintf(errorOutput, "%s;%s;%s;%s;%s", dateTimestamp, sevCode_error, error_field[app_field], error_field[errorCode_field], errormsg2);
 }
-//optionFileLanguage function here
+//defaultSettings function here
+void defaultSettings() {
+    if ((error_field[sevCode_field][0] < SEV1) || (error_field[sevCode_field][0] > SEV4)) {
+        strcpy(error_field[sevCode_field], sevCode_DEFAULT);
+
+        if (strlen(error_field[app_field]) > appLEN) { //appLen and app_field stand for the application length and amount of fields
+            error_field[app_field][appLEN] = '\0';
+        }
+        if {error_field[app_field][0] == '\0') {
+            strcpy(error_field[app_field], app_DEFAULT);
+        }
+        if {
+
+        }
+    }
+}
 
 //main function here
 int main(int argc, char* argv[]) {
