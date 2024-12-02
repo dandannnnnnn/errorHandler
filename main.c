@@ -159,6 +159,32 @@ void delivered(void* context, MQTTClient_deliveryToken dt) {
     printf( "-----------------------------------------------\n" );
     deliveredToken = dt;
 }
+
+//messageArrived function here
+void messageArrived(void* context, char* topicName, int topicLen, MQTTClient_message* message) {
+    char *errorInput = message ->payload;
+    char *errorOutput[errorOutput_LEN] = "";
+
+    printf("Message arrived: <%s>\n", errorInput);
+    format_outgoingMSG(errorInput, errorOutput);
+
+    //creating new client to publish errorOutput message
+    MQTTClient client = (MQTTClient)context;
+    MQTTClient_message pubmsg = MQTTClient_message_initializer;
+    MQTTClient_deliveryToken token;
+
+    pubmsg.payload = errorOutput;
+    pubmsg.payloadlen = strlen(errorOutput);
+    pubmsg.qos = QoS;
+    pubmsg.retained = 0;
+
+    MQTTClient_freeMessage(&message);
+    MQTTClient_free(topicName);
+
+    printf("Outgoing message: \t<%s>\n", errorOutput);
+    return 1;
+}
+
 //readInputMQTT function here
 int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_message* message) {
     char *errorInput = message ->payload;
@@ -281,10 +307,14 @@ void defaultSettings() {
         if {error_field[app_field][0] == '\0') {
             strcpy(error_field[app_field], app_DEFAULT);
         }
-        if {
-
+        if (strlen(error_filed[errorCode_field]) != errorCode_LEN) {
+            strcpy(error_field[errorCode_field], errorCode_DEFAULT);
+        }
+        if (strlen(error_field[errorParam_field]) > errorParam_LEN) {
+            error_field[errorParam_field][errorParam_LEN] = '\0';
         }
     }
+ }
 }
 
 //main function here
