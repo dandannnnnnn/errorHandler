@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <MQTTClient.h> //remove '//' when using RPi
+#include <MQTTClient.h> 
 #include "settingErrHandler.h" //file with array definitions and length
 #include "send_mqtt_msg.c" //file with MQTT functions
 
