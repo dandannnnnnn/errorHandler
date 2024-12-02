@@ -148,9 +148,9 @@ void readingFile(char *fileName) {
                 current = current -> next;
             }
         }
-        fclose(fp);
-        return 1;
     }
+    fclose(fp);
+    return 1;
 }
 
 //delivered function: used when a message is succesfully delivered
