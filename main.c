@@ -12,6 +12,7 @@
 #include "send_mqtt_msg.c" //file with MQTT functions
 
 volatile MQTTClient_deliveryToken deliveredToken;
+char error_field[][errorMSG_LEN] = {"", "", "", ""};
 
 struct tbl {
     char errorCode[errorCode_LEN + 1]; //added one more space for '\0'
@@ -112,7 +113,7 @@ int extractErrText(char *line, char *errorText) {
 
 
 //splitStrings function here
-void readingFile(char *fileName) {
+int readingFile(char *fileName) {
     FILE *fp;
     int count = 0;
     char line[1024] = "";
@@ -243,7 +244,19 @@ void dateTimestamp() {
     sprintf(minute, "%02d", t->tm_min);
     sprintf(second, "%02d", t->tm_sec);
 
-    sprintf(dateTimestamp, "%s/%s/%s %s:%s:%s", day, month, year, hour, minute, second);
+    strcpy(currentDate, day);
+    strcat(currentDate, "/");
+    strcat(currentDate, month);
+    strcat(currentDate, "/");
+    strcat(currentDate, year);
+    strcat(currentDate, " ");
+    strcat(currentDate, hour);
+    strcat(currentDate, ":");
+    strcat(currentDate, minute);
+    strcat(currentDate, ":");
+    strcat(currentDate, second);
+
+    printf("%s\n", currentDate);
 }
 
 //parameterYES function here
@@ -304,10 +317,10 @@ void defaultSettings() {
         if (strlen(error_field[app_field]) > appLEN) { //appLen and app_field stand for the application length and amount of fields
             error_field[app_field][appLEN] = '\0';
         }
-        if {error_field[app_field][0] == '\0') {
+        if (error_field[app_field][0] == '\0') {
             strcpy(error_field[app_field], app_DEFAULT);
         }
-        if (strlen(error_filed[errorCode_field]) != errorCode_LEN) {
+        if (strlen(error_field[errorCode_field]) != errorCode_LEN) {
             strcpy(error_field[errorCode_field], errorCode_DEFAULT);
         }
         if (strlen(error_field[errorParam_field]) > errorParam_LEN) {
