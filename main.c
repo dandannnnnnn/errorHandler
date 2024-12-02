@@ -112,7 +112,7 @@ int extractErrText(char *line, char *errorText) {
 }
 
 //readingFile function here
-int readingFile(const char *fileName) {
+int readingFile(char *fileName) {
     FILE *fp;
     int count = 0;
     char line[1024] = "";
@@ -335,8 +335,9 @@ void defaultSettings() {
 int main(int argc, char* argv[]) {
 
     //Asking user which language they want to use
-    char fileName[fileName_LEN + 1] = "";
+    char fileName[fileName_LEN] = "././Error_msg_";
     int languageAnswer;
+    char langCode[5];
 
     printf("Choose the language:\n");
     printf("1. English\n");
@@ -347,19 +348,23 @@ int main(int argc, char* argv[]) {
 
     switch (languageAnswer) {
         case 1:
-            sprintf(fileName, "%sEN.txt", fileName);
+            strcpy(langCode, "EN");
             break;
         case 2:
-            sprintf(fileName, "%sFR.txt", fileName);
+            strcpy(langCode, "FRE");
             break;
         case 3:
-            sprintf(fileName, "%sNL.txt", fileName);
+            strcpy(langCode, "NL");
             break;
         default:
             printf("Invalid choice. Default language will be used\n");
-            sprintf(fileName, "%sEN.txt", fileName);
+            strcpy(langCode, "EN");
             break;
     }
+    strcat(fileName, langCode);
+    strcat(fileName, ".txt");
+    int result = readingFile(fileName);
+
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     int rc;
