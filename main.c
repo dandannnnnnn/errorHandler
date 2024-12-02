@@ -221,7 +221,7 @@ int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_messa
 
 void connectionLost(void *context, char *cause) {
     printf("Connection lost!\n");
-    printf("    no connection: %s\n", noConnection);
+    printf("no connection: %s\n", cause);
 }
 
 //dateTimestamp function here: DD/MM/YYYY HH:MM:SS
@@ -335,7 +335,7 @@ void defaultSettings() {
 int main(int argc, char* argv[]) {
 
     //Asking user which language they want to use
-    char fileName[fileName_LEN] = "";
+    char fileName[fileName_LEN + 1] = "";
     int languageAnswer;
 
     printf("Choose the language:\n");
