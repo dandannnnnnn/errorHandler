@@ -163,7 +163,7 @@ void delivered(void* context, MQTTClient_deliveryToken dt) {
 //messageArrived function here
 void messageArrived(void* context, char* topicName, int topicLen, MQTTClient_message* message) {
     char *errorInput = message ->payload;
-    char *errorOutput[errorOutput_LEN] = "";
+    char errorOutput[errorOutput_LEN] = "";
 
     format_outgoingMSG(errorInput, errorOutput);
     printf("Message arrived: <%s>\n", errorInput);
