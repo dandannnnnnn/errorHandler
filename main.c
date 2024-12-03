@@ -186,6 +186,17 @@ void dateTimestamp() {
 }
 
 //parameterYES function here
+int parameterYES(char *line) {
+    int i = 0;
+
+    while (line[i] != '\0') {
+        if ((line[i] == '%') && (line[i+1] == 's')) {
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}
 
 //defaultSettings function here
 void defaultSettings() {
