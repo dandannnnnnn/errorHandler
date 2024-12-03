@@ -9,7 +9,7 @@
 #define QOS         1                               // Quality of Service level
 #define TIMEOUT     10000L                          // Timeout in milliseconds
 
-int main(int argc, char* argv[]) {
+int sendMQTT(int argc, char* argv[]) {
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     int rc;
