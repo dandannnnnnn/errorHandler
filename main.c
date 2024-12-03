@@ -165,8 +165,8 @@ void messageArrived(void* context, char* topicName, int topicLen, MQTTClient_mes
     char *errorInput = message ->payload;
     char *errorOutput[errorOutput_LEN] = "";
 
-    printf("Message arrived: <%s>\n", errorInput);
     format_outgoingMSG(errorInput, errorOutput);
+    printf("Message arrived: <%s>\n", errorInput);
 
     //creating new client to publish errorOutput message
     MQTTClient client = (MQTTClient)context;
@@ -283,8 +283,8 @@ void format_outgoingMSG(char *line, char *errorOutput) {
     int sevcode = 0;
 
     strcpy(errorOutput, "");
-    errorFields(line, error_field, totalError_fields);
-    addTime(dateTimestamp);
+    void parseErrorFields(char *line, char error_fields_array[][errorMSG_LEN], int totalError_fields);
+    void addTime(char *dateTimestamp); //fix this error later
 
    if (error_field[0] != NULL && strlen(error_field[0] > 0)) {
     sevcode = atoi(error_field[0]);
