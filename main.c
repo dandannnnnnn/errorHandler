@@ -152,53 +152,6 @@ int readingFile(char *filename) {
     fclose(fp);
     return 1;
 }
-
-//delivered function: used when a message is succesfully delivered
-void delivered(void* context, MQTTClient_deliveryToken dt) {
-    printf("Message with token value %d delivered.\n", dt);
-    printf( "-----------------------------------------------\n" );
-    deliveredToken = dt;
-}
-
-//readInputMQTT function here
-int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_message* message) {
-    char *errorInput = message ->payload;
-    char errorOutput[errorOutput_LEN] = "";
-
-    printf("Message arrived: <%s>\n", errorInput);
-    
-    sprintf(errorOutput, "%s", errorInput);
-    printf("Message arrived: <%s>\n", errorOutput);
-
-    //create new client to publish errorOutput message
-    MQTTClient client = (MQTTClient)context;
-    MQTTClient_message pubmsg = MQTTClient_message_initializer;
-    MQTTClient_deliveryToken token2;
-
-    pubmsg.payload = errorOutput;
-    pubmsg.payloadlen = strlen(errorOutput);
-    pubmsg.qos = QoS;
-    pubmsg.retained = 0;
-
-    //Publish errorOutput message on topic2
-    MQTTClient_publishMessage(client, topic2, &pubmsg, &token2);
-    printf("Publishing to topic %s\n", topic2);
-
-    int rc = MQTTClient_waitForCompletion(client, token2, timeout );
-    printf("Message with delivery token %d delivered, rc=%d\n", token2, rc);
-    printf( "Msg out:\t<%s>\n", errorOutput); 
-
-    MQTTClient_freeMessage(&message);
-    MQTTClient_free(topicName);
-
-    return 1;
-}
-
-void connectionLost(void *context, char *cause) {
-    printf("Connection lost!\n");
-    printf("no connection: %s\n", cause);
-}
-
 //dateTimestamp function here: DD/MM/YYYY HH:MM:SS
 void dateTimestamp() {
     time_t now = time(NULL);
