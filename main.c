@@ -11,7 +11,6 @@
 #include "settingErrHandler.h" //file with array definitions and length
 #include "send_mqtt_msg.c" //file with MQTT functions
 
-volatile MQTTClient_deliveryToken deliveredToken;
 char error_field[][errorMSG_LEN] = {"", "", "", ""};
 
 struct tbl {
@@ -252,34 +251,6 @@ int main(int argc, char ***argv[]) {
     strcat(filename, langCode);
     strcat(filename, ".txt");
     int result = readingFile(filename);
-
-    MQTTClient client;
-    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
-    int rc;
-
-    MQTTClient_create(&client, IPaddress, CLIENT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-    conn_opts.keepAliveInterval = 20;
-    conn_opts.cleansession = 1;
-
-    // Define the correct call back functions when messages arrive
-    MQTTClient_setCallbacks(client, client, connectionLost, readInputMQTT, delivered);
-
-    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) {
-        printf("Failed to connect, return code %d\n", rc);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("Subscribing to topic %s for client %s using QoS%d\n\n", topic1, CLIENT, QoS);
-    MQTTClient_subscribe(client, topic1, QoS);
-
-    // Keep the program running to continue receiving and publishing messages
-    for(;;) {
-        ;
-    }
-
-    MQTTClient_disconnect(client, 10000);
-    MQTTClient_destroy(&client);
-    return rc;
 }
 
 
