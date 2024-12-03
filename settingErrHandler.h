@@ -42,7 +42,7 @@
 #define errorCode_DEFAULT "MMMXXXX"
 #define errorMSG_DEFAULT "xxxxxx"
  
-#define fileName "././Error_msg_"
+#define fileName "./Error_msg_"
 #define fileName_LEN 130
 #define MAX_RECORDS 10000
 #define timeout 500L
