@@ -335,7 +335,7 @@ void defaultSettings() {
 int main(int argc, char* argv[]) {
 
     //Asking user which language they want to use
-    char fileName[fileName_LEN] = "././Error_msg_";
+    char fileName[fileName_LEN] = "./Error_msg_";
     int languageAnswer;
     char langCode[5];
 
