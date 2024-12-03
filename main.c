@@ -224,7 +224,7 @@ int main(int argc, char ***argv[]) {
     //Asking user which language they want to use
     char filename[FNAME_LEN] = "./Error_msg_";
     int languageAnswer;
-    char langCode[5];
+    char language[5];
 
     printf("Choose the language:\n");
     printf("1. English\n");
@@ -235,20 +235,20 @@ int main(int argc, char ***argv[]) {
 
     switch (languageAnswer) {
         case 1:
-            strcpy(langCode, "EN");
+            strcpy(language, "EN");
             break;
         case 2:
-            strcpy(langCode, "FRE");
+            strcpy(language, "FRE");
             break;
         case 3:
-            strcpy(langCode, "NL");
+            strcpy(language, "NL");
             break;
         default:
             printf("Invalid choice. Default language will be used\n");
-            strcpy(langCode, "EN");
+            strcpy(language, "EN");
             break;
     }
-    strcat(filename, langCode);
+    strcat(filename, language);
     strcat(filename, ".txt");
     int result = readingFile(filename);
 }
