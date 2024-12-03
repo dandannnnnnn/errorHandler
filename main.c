@@ -160,31 +160,6 @@ void delivered(void* context, MQTTClient_deliveryToken dt) {
     deliveredToken = dt;
 }
 
-//messageArrived function here
-void messageArrived(void* context, char* topicName, int topicLen, MQTTClient_message* message) {
-    char *errorInput = message ->payload;
-    char errorOutput[errorOutput_LEN] = "";
-
-    format_outgoingMSG(errorInput, errorOutput);
-    printf("Message arrived: <%s>\n", errorInput);
-
-    //creating new client to publish errorOutput message
-    MQTTClient client = (MQTTClient)context;
-    MQTTClient_message pubmsg = MQTTClient_message_initializer;
-    MQTTClient_deliveryToken token;
-
-    pubmsg.payload = errorOutput;
-    pubmsg.payloadlen = strlen(errorOutput);
-    pubmsg.qos = QoS;
-    pubmsg.retained = 0;
-
-    MQTTClient_freeMessage(&message);
-    MQTTClient_free(topicName);
-
-    printf("Outgoing message: \t<%s>\n", errorOutput);
-    return 1;
-}
-
 //readInputMQTT function here
 int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_message* message) {
     char *errorInput = message ->payload;
@@ -198,7 +173,7 @@ int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_messa
     //create new client to publish errorOutput message
     MQTTClient client = (MQTTClient)context;
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
-    MQTTClient_deliveryToken token;
+    MQTTClient_deliveryToken token2;
 
     pubmsg.payload = errorOutput;
     pubmsg.payloadlen = strlen(errorOutput);
@@ -206,11 +181,11 @@ int readInputMQTT(void* context, char* topicName, int topicLen, MQTTClient_messa
     pubmsg.retained = 0;
 
     //Publish errorOutput message on topic2
-    MQTTClient_publishMessage(client, topic2, &pubmsg, &token);
+    MQTTClient_publishMessage(client, topic2, &pubmsg, &token2);
     printf("Publishing to topic %s\n", topic2);
 
-    int rc = MQTTClient_waitForCompletion(client, token, timeout );
-    printf("Message with delivery token %d delivered, rc=%d\n", token, rc);
+    int rc = MQTTClient_waitForCompletion(client, token2, timeout );
+    printf("Message with delivery token %d delivered, rc=%d\n", token2, rc);
     printf( "Msg out:\t<%s>\n", errorOutput); 
 
     MQTTClient_freeMessage(&message);
@@ -269,46 +244,6 @@ int parameterYES(char *line) {
         i++;
     }
     return 0;
-}
-//format_outgoingMSG function here
-void format_outgoingMSG(char *line, char *errorOutput) {
-    char dateTimestamp[timestampLEN] = "";
-    char error_field[][errorMSG_LEN] = {"", "", "", ""};
-
-    char sevCode_error[sevCode_LEN + 1] = "";
-    char errorMSG[errorMSG_LEN] = "";
-    char errormsg2[errorMSG_LEN + errorParam_LEN] = "";
-
-    int totalError_fields = sizeof(error_field) /sizeof(error_field[0]);
-    int sevcode = 0;
-
-    strcpy(errorOutput, "");
-    void parseErrorFields(char *line, char error_fields_array[][errorMSG_LEN], int totalError_fields);
-    void addTime(char *dateTimestamp); //fix this error later
-
-   if (error_field[0] != NULL && strlen(error_field[0] > 0)) {
-    sevcode = atoi(error_field[0]);
-    if ((sevcode >= 1) && (sevcode <= 4)) {
-        sprintf(sevCode_error, "SEV %d", sevcode);
-    } else {
-        sprintf(sevCode_error, "SEV4"); //incase sevcode isn't in the range of 1-4
-    }
-   }
-
-    current = head;
-    if (searchList(&current, error_field[errorCode_field]) == 0) {
-        strcpy(errorMSG, errorMSG_DEFAULT);
-    } else {
-        strcpy(errorMSG, current->errorText);
-    }
-    if (parameterYES(errorMSG)) {
-        sprintf(errormsg2, errorMSG, error_field[errorParam_field]);
-    } else {
-        sprintf(errormsg2, "%s", errorMSG);
-    }
-
-    //formatting the message
-    sprintf(errorOutput, "%s;%s;%s;%s;%s", dateTimestamp, sevCode_error, error_field[app_field], error_field[errorCode_field], errormsg2);
 }
 //defaultSettings function here
 void defaultSettings() {
