@@ -133,11 +133,11 @@ int readingFile(char *filename) {
         if(line[0] != '#') {
             count++;
             if (extractErrCode(line, errorCode) == 0) {
-                printf("Incorrect error code on line %d of file %s\n", count, fileName);
+                printf("Incorrect error code on line %d of file %s\n", count, filename);
                 return 0;
             }
             if (extractErrText(line, errorText) == 0) {
-                printf("Incorrect error text on line %d of file %s\n", count, fileName);
+                printf("Incorrect error text on line %d of file %s\n", count, filename);
                 return 0;
             }
             if (count == 1) {
