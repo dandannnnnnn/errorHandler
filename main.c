@@ -236,13 +236,14 @@ int main(int argc, char ***argv[]) {
 
     switch (languageAnswer) {
         case 1:
-            strcpy(language, "EN");
+            strcpy(language, "%EN.txt");
+            fopen(filename, "r");
             break;
         case 2:
-            strcpy(language, "FRE");
+            strcpy(language, "%FRE.txt");
             break;
         case 3:
-            strcpy(language, "NL");
+            strcpy(language, "%NL.txt");
             break;
         default:
             printf("Invalid choice. Default language will be used\n");
