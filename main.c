@@ -222,42 +222,32 @@ void defaultSettings() {
 
 //main function here
 int main(int argc, char ***argv[]) {
-
-    //Asking user which language they want to use
-    char filename[FNAME_LEN] = "./Error_msg_";
-    int languageAnswer;
-    char language[5];
-
-    printf("Choose the language:\n");
-    printf("1. English\n");
-    printf("2. French\n");
-    printf("3. Dutch\n");
-    printf("Enter your choice (1-3): ");
-    scanf("%d", &languageAnswer);
-
-    switch (languageAnswer) {
-        case 1:
-            strcpy(language, "EN");
-            break;
-        case 2:
-            strcpy(language, "FRE");
-            break;
-        case 3:
-            strcpy(language, "NL");
-            break;
-        default:
-            printf("Invalid choice. Default language will be used\n");
-            strcpy(language, "EN");
-            break;
-    }
-    snprintf(filename, FNAME_LEN, "./Error_msg_%s.txt", language); //complete file path
-    if (readingFile(filename) == 0) {
-        printf("Error reading file %s\n", filename);
+    if (argc != 2) {
+        printf("Using: %s <LANG>\n", argv[0]);
         return 1;
     }
-    printf("Language file loaded succesfully: %s\n", filename);
+
+    char *language = argv[1];
+    char filename[50];
+
+    if (strcmp(language, "EN") == 0) {
+        strcpy(filename, "Error_msg_EN.txt");
+    } else if (strcmp(language, "FRE") == 0) {
+        strcpy(filename, "Error_msg_FRE.txt");
+    } else if (strcmp(language, "NL") == 0) {
+        strcpy(filename, "Error_msg_NL.txt");
+    } else {
+        printf("Unsupported language: %s. Default language will be used\n", language);
+        strcpy(filename, "Error_msg_EN.txt");
+    }
+
+    printf("Running error messages, language: %s\n", language);
+    if(!readingFile(filename)) {
+        printf("Error: cannot read file %s\n", filename);
+        return 1;
+    }
     printList();
-    
+
     return 0;
 }
 
