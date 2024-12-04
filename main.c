@@ -221,7 +221,7 @@ void defaultSettings() {
 
 
 //main function here
-int main(int argc, char ***argv[]) {
+int main(int argc, char *argv[]) {
     if (argc != 2) {
         printf("Using: %s <LANG>\n", argv[0]);
         return 1;
