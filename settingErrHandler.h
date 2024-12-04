@@ -6,7 +6,7 @@
 
 
 #define CLIENT    ""
-#define PAYLOAD "Hello from Raspberry Pi!"
+#define PAYLOAD "Hello from Raspberry Pi 101!"
 
 #define topic1   "MB_subMQTT"
 #define topic2   "MB_publishMQTT"
