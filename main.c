@@ -236,23 +236,28 @@ int main(int argc, char ***argv[]) {
 
     switch (languageAnswer) {
         case 1:
-            strcpy(language, "%EN.txt");
-            fopen(filename, "r");
+            strcpy(language, "EN");
             break;
         case 2:
-            strcpy(language, "%FRE.txt");
+            strcpy(language, "FRE");
             break;
         case 3:
-            strcpy(language, "%NL.txt");
+            strcpy(language, "NL");
             break;
         default:
             printf("Invalid choice. Default language will be used\n");
             strcpy(language, "EN");
             break;
     }
-    strcat(filename, language);
-    strcat(filename, ".txt");
-    int result = readingFile(filename);
+    snprintf(filename, FNAME_LEN, "./Error_msg_%s.txt", language); //complete file path
+    if (readingFile(filename) == 0) {
+        printf("Error reading file %s\n", filename);
+        return 1;
+    }
+    printf("Language file loaded succesfully: %s\n", filename);
+    printList();
+    
+    return 0;
 }
 
 
