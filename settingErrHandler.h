@@ -9,8 +9,6 @@
 #define PAYLOAD "Hello from Raspberry Pi!"
 
 #define topic1   "MB_subMQTT"
-//#define errorTopic	SUB_TOPIC
-#define testTopic	"MB_testing"
 #define topic2   "MB_publishMQTT"
 
 #define topicLEN   120
