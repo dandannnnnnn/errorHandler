@@ -2,7 +2,7 @@
 
 #Declare the variables
 HOST=192.168.0.101
-TOPIC=bashtest
+TOPIC=MB_subMQTT
 SLEEP=1
 PROG_NAME=DUVEL
 SEV_CODE=2
