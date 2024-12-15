@@ -1,5 +1,5 @@
 //All variable names
-#define IPaddress     "tcp://192.168.0.101:1883" //IP-address:Port
+#define IPaddress     "tcp://192.168.0.14:1883" //IP-address:Port
 #define QoS         1
 
 #define timeMQTT_sub	50000L
