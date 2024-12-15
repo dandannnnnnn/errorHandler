@@ -5,7 +5,7 @@
 #define ADDRESS     "tcp://192.168.0.101:1880"       // MQTT broker URL
 #define CLIENTID    "RaspberryPiClient"             // Unique client ID
 #define TOPIC       "topic2"                    // MQTT topic
-#define PAYLOAD     "Hello from Raspberry Pi!"      // Message to send
+#define payload2     "Hello from Raspberry Pi!"      // Message to send
 #define QOS         1                               // Quality of Service level
 #define TIMEOUT     10000L                          // Timeout in milliseconds
 
@@ -29,8 +29,8 @@ int sendMQTT(int argc, char* argv[]) {
 
     // Create the message
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
-    pubmsg.payload = PAYLOAD;
-    pubmsg.payloadlen = strlen(PAYLOAD);
+    pubmsg.payload = payload2;
+    pubmsg.payloadlen = strlen(payload2);
     pubmsg.qos = QOS;
     pubmsg.retained = 0;
 
