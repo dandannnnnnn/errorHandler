@@ -143,6 +143,7 @@ int extractErrCode(char *line, char *errorCode) {
             return 0;
         }
         errorCode[i] = '\0';
+        return 1;
     }
 }
 
@@ -158,8 +159,9 @@ int extractErrText(char *line, char *errorText) {
         if ( i > errorMSG_LEN) {
             return 0;
         }
-        errorText[z] = '\0';
     }
+     errorText[z] = '\0';
+     return 1;
 }
 
 //readingFile function here
