@@ -4,7 +4,7 @@
 
 #define ADDRESS     "tcp://192.168.0.14:1880"       // MQTT broker URL
 #define CLIENTID    "RaspberryPiClient"             // Unique client ID
-#define TOPIC       "MB_subMQTT"                    // MQTT topic
+#define TOPIC       "MB_publishMQTT"                    // MQTT topic
 #define payload2     "Hello from Raspberry Pi!"      // Message to send
 #define QOS         1                               // Quality of Service level
 #define TIMEOUT     10000L                          // Timeout in milliseconds
