@@ -77,6 +77,7 @@ void delivered(void *context, MQTTClient_deliveryToken dt) {
     deliveredtoken = dt;
 }
 
+//When message arrives, it will format it and send it back out to MB_publishMQTT
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
     char *error_in = message->payload;
     char  error_out[ errorOutput_LEN ] = "";
@@ -98,7 +99,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     pubmsg.qos = QOS;
     pubmsg.retained = 0;
 
-    //Publish the error_out message on PUB TOPIC 
+    //Publish the error_out message on MB_publishMQTT
     MQTTClient_publishMessage(CLIENT, topic2, &pubmsg, &token2);
     printf("Publishing to topic %s\n", topic2);
     
@@ -283,6 +284,7 @@ int main(int argc, char *argv[]) {
     char *language = argv[1];
     char filename[50];
 
+    //file EN, FRE or NL will open depending on the given argument
     if (strcmp(language, "EN") == 0) {
         strcpy(filename, "Error_msg_EN.txt");
     } else if (strcmp(language, "FRE") == 0) {
