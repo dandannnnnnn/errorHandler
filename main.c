@@ -72,7 +72,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 
     //Publish the error_out message on MB_publishMQTT
     int rc = MQTTClient_publishMessage(client, topic2, &pubmsg, &token2);
-    MQTTClient_publishMessage(client, topic2, &pubmsg, &token2);
     printf("Publishing to topic %s\n", topic2);
     
     // Validate that message has been successfully delivered
