@@ -29,15 +29,18 @@ struct tbl *current = NULL;
 //insert_first function here
 void insert_first(char *errorCode, char *errorText) { 
     struct tbl *lnklist = (struct tbl*)malloc(sizeof(struct tbl)); //reserves space for a new struct tbl
-    strcpy(lnklist -> errorCode, errorCode);
-    strcpy(lnklist -> errorText, errorText);
 
     if(!lnklist) { //Checking if memory allocation is correctly set
         printf("Memory allocation failed in insert_first function");
         exit(1); //exiting if it is incorrect
     }
 
-    lnklist -> next = NULL;
+    strncpy(lnklist->errorCode, errorCode, errorCode_LEN);
+    lnklist->errorCode[errorCode_LEN] = '\0';
+    strncpy(lnklist->errorText, errorText, errorMSG_LEN);
+    lnklist->errorText[errorMSG_LEN] = '\0';
+
+    lnklist -> next = head;
     head = lnklist;
 }
 
@@ -54,10 +57,12 @@ void insert_next(struct tbl *list, char *errorCode, char *errorText) {
         exit(1);
     }
 
-    strcpy(lnklist -> errorCode, errorCode);
-    strcpy(lnklist -> errorText, errorText);
+    strncpy(lnklist->errorCode, errorCode, errorCode_LEN);
+    lnklist->errorCode[errorCode_LEN] = '\0';
+    strncpy(lnklist->errorText, errorText, errorMSG_LEN);
+    lnklist->errorText[errorMSG_LEN] = '\0';
 
-    lnklist -> next = NULL;
+    lnklist -> next = list -> next;
     list -> next = lnklist;
 }
 
