@@ -76,12 +76,18 @@ int searchList(struct tbl **list, char *errorCode) {
         }
         temp = temp -> next;
     }
+    *list = NULL; //Update *list to NULL if no match is found
     return 0;
 }
 
 //printlist function here
 void printList() {
     struct tbl *p = head;
+
+    if(p == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
     printf("\nError list:\n");
     printf("==================================\n");
     //start from the beginning
@@ -94,7 +100,12 @@ void printList() {
 }
 
 void delivered(void *context, MQTTClient_deliveryToken dt) {
-    
+    if (context = NULL) {
+        printf("Error context is NULL in delivered function\n");
+        return;
+    }
+
+
     printf("Message with token value %d delivery confirmed\n", dt);
     printf( "-----------------------------------------------\n" );    
     deliveredtoken = dt;
