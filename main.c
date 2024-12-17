@@ -24,9 +24,10 @@ struct tbl {
 };
 
 struct tbl *head = NULL; //declaring a pointer and not a value
+struct tbl *current = NULL;
 
 void delivered(void *context, MQTTClient_deliveryToken dt) {
-    if (context = NULL) {
+    if (context == NULL) {
         printf("Error context is NULL in delivered function\n");
         return;
     }
@@ -368,7 +369,7 @@ int main(int argc, char *argv[]) {
     conn_opts.cleansession = 1;
 
     // Define the correct call back functions when messages arrive
-    MQTTClient_setCallbacks(client, client, connlost, msgarrvd, delivered);
+    MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, delivered);
 
     if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) {
         printf("Failed to connect, return code %d\n", rc);
