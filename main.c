@@ -30,12 +30,28 @@ void insert_first(char *errorCode, char *errorText) {
     strcpy(lnklist -> errorCode, errorCode);
     strcpy(lnklist -> errorText, errorText);
 
+    if(!lnklist) { //Checking if memory allocation is correctly set
+        printf("Memory allocation failed in insert_first function");
+        exit(1); //exiting if it is incorrect
+    }
+
     lnklist -> next = NULL;
     head = lnklist;
 }
 
 void insert_next(struct tbl *list, char *errorCode, char *errorText) {
+    if (!list) { //Checking if the pointer is correct
+        printf("Received NULL pointer for list in insert_next function.\n");
+        return;
+    }
+
     struct tbl *lnklist = (struct tbl*)malloc(sizeof(struct tbl));
+
+    if(!lnklist) { //Checking if memory allocation is correctly set
+        printf("Memory allocation failed in insert_next function.\n");
+        exit(1);
+    }
+
     strcpy(lnklist -> errorCode, errorCode);
     strcpy(lnklist -> errorText, errorText);
 
