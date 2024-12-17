@@ -13,7 +13,7 @@
 #include <time.h>
 #include <string.h>
 #include <MQTTClient.h> 
-#include "settingErrHandler.h" //file with array definitions and length
+#include "settingErrHandler.h" //Make sure this file is added for the connection and correct variables
 
 char error_field[][errorMSG_LEN] = {"", "", "", ""};
 volatile MQTTClient_deliveryToken deliveredtoken;
