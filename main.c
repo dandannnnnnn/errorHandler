@@ -51,6 +51,12 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     sprintf( error_out, "%s + Some additional text here", error_in );
     printf( "msgarrvd: error_out: <%s>\n", error_out );   
 
+    //checking if client is valid
+    if (context == NULL) {
+        printf("Error");
+        return 0;
+    }
+
     // Create a new client to publish the error_out message
     MQTTClient client = (MQTTClient)context;
     MQTTClient_message pubmsg = MQTTClient_message_initializer;
@@ -62,11 +68,11 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     pubmsg.retained = 0;
 
     //Publish the error_out message on MB_publishMQTT
-    MQTTClient_publishMessage(CLIENT, topic2, &pubmsg, &token2);
+    MQTTClient_publishMessage(client, topic2, &pubmsg, &token2);
     printf("Publishing to topic %s\n", topic2);
     
     // Validate that message has been successfully delivered
-    int rc = MQTTClient_waitForCompletion(CLIENT, token2, timeout);
+    int rc = MQTTClient_waitForCompletion(client, token2, timeout);
     printf("Message with delivery token %d delivered, rc=%d\n", token2, rc);
     printf( "Msg out:\t<%s>\n", error_out );
 
