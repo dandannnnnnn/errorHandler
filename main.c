@@ -67,12 +67,16 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     pubmsg.qos = QoS;
     pubmsg.retained = 0;
 
+    //Checking if topic2 is correct
+    printf("Publishing to topic %s with message: %s\n", topic2, error_out);
+
     //Publish the error_out message on MB_publishMQTT
+    int rc = MQTTClient_publishMessage(client, topic2, &pubmsg, &token2);
     MQTTClient_publishMessage(client, topic2, &pubmsg, &token2);
     printf("Publishing to topic %s\n", topic2);
     
     // Validate that message has been successfully delivered
-    int rc = MQTTClient_waitForCompletion(client, token2, timeout);
+    rc = MQTTClient_waitForCompletion(client, token2, timeout);
     printf("Message with delivery token %d delivered, rc=%d\n", token2, rc);
     printf( "Msg out:\t<%s>\n", error_out );
 
