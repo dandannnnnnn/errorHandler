@@ -174,6 +174,10 @@ int extractErrText(char *line, char *errorText) {
     int i = errorCode_LEN + 1;
     int z = 0;
 
+    if(!line || !errorText) {
+        return 0;
+    }
+
     while (line[i] != '\n') {
         errorText[z] = line[i];
         i++;
@@ -211,6 +215,7 @@ int readingFile(char *filename) {
     }
     count = 0;
     while(fgets(line, sizeof(line), fp) != NULL) {
+        line[sizeof(line) - 1] = '\0';
         if(line[0] != '#') {
             count++;
             if (extractErrCode(line, errorCode) == 0) {
@@ -287,6 +292,11 @@ int parameterYES(char *line) {
 
 //defaultSettings function here
 void defaultSettings() {
+
+    if (error_field == NULL) {
+        return;
+    }
+
     if ((error_field[sevCode_field][0] < SEV1) || (error_field[sevCode_field][0] > SEV4)) {
         strcpy(error_field[sevCode_field], sevCode_DEFAULT);
 
