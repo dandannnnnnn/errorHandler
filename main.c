@@ -2,6 +2,8 @@
 -------------------------------------------------------------------------------------------------------------------------*/
 /* Main code for error handler */
 // started compiler with: gcc -o main main.c -lpaho-mqtt3c and then ./main
+/* Ik heb ChatGPT en Copilot gebruikt om mij te helpen met de segmentation fout eruit
+  omdat ik het zelf na 4x te bekijken/begrijpen niet vond. */
 /* -------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------*/
 #include <stdio.h>
@@ -211,7 +213,7 @@ int readingFile(char *filename) {
     fp = fopen(filename, "r");
     if (fp == NULL) {
         printf("Error opening file.");
-        exit(1);
+        return 0;
     }
     count = 0;
     while(fgets(line, sizeof(line), fp) != NULL) {
