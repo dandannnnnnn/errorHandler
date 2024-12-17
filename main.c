@@ -10,7 +10,7 @@
 #include <string.h>
 #include <MQTTClient.h> 
 #include "settingErrHandler.h" //file with array definitions and length
-#include "send_mqtt_msg.c" //file with MQTT functions
+//#include "send_mqtt_msg.c" //file with MQTT functions
 
 char error_field[][errorMSG_LEN] = {"", "", "", ""};
 volatile MQTTClient_deliveryToken deliveredtoken;
@@ -96,7 +96,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
 
     pubmsg.payload = error_out;
     pubmsg.payloadlen = strlen( error_out );
-    pubmsg.qos = QOS;
+    pubmsg.qos = QoS;
     pubmsg.retained = 0;
 
     //Publish the error_out message on MB_publishMQTT
@@ -308,7 +308,7 @@ int main(int argc, char *argv[]) {
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     int rc;
 
-    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(&client, IPaddress, CLIENT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
