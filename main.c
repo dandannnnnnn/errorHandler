@@ -24,7 +24,58 @@ struct tbl {
 };
 
 struct tbl *head = NULL; //declaring a pointer and not a value
-struct tbl *current = NULL;
+
+void delivered(void *context, MQTTClient_deliveryToken dt) {
+    if (context = NULL) {
+        printf("Error context is NULL in delivered function\n");
+        return;
+    }
+    printf("Message with token value %d delivery confirmed\n", dt);
+    printf( "-----------------------------------------------\n" );    
+    deliveredtoken = dt;
+}
+
+int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
+    if (message == NULL || message->payload == NULL) {
+        printf("Received NULL message or payload\n");
+        return 0;
+    }
+
+    char *error_in = message->payload;
+    char  error_out[ errorOutput_LEN ] = "";
+    
+    // print incoming message
+    printf( "msgarrvd: error_in: <%s>\n", error_in );   
+    
+    // format error out msg
+    sprintf( error_out, "%s + Some additional text here", error_in );
+    printf( "msgarrvd: error_out: <%s>\n", error_out );   
+
+    // Create a new client to publish the error_out message
+    MQTTClient client = (MQTTClient)context;
+    MQTTClient_message pubmsg = MQTTClient_message_initializer;
+    MQTTClient_deliveryToken token2;
+
+    pubmsg.payload = error_out;
+    pubmsg.payloadlen = strlen( error_out );
+    pubmsg.qos = QoS;
+    pubmsg.retained = 0;
+
+    //Publish the error_out message on MB_publishMQTT
+    MQTTClient_publishMessage(CLIENT, topic2, &pubmsg, &token2);
+    printf("Publishing to topic %s\n", topic2);
+    
+    // Validate that message has been successfully delivered
+    int rc = MQTTClient_waitForCompletion(CLIENT, token2, timeout);
+    printf("Message with delivery token %d delivered, rc=%d\n", token2, rc);
+    printf( "Msg out:\t<%s>\n", error_out );
+
+    // Close the outgoing message queue
+    MQTTClient_freeMessage(&message);
+    MQTTClient_free(topicName);
+    
+    return 1;
+}
 
 //insert_first function here
 void insert_first(char *errorCode, char *errorText) { 
@@ -97,67 +148,6 @@ void printList() {
     }
     printf("\nEnd of Error list\n");
     printf("==================================\n");
-}
-
-void delivered(void *context, MQTTClient_deliveryToken dt) {
-    if (context = NULL) {
-        printf("Error context is NULL in delivered function\n");
-        return;
-    }
-
-
-    printf("Message with token value %d delivery confirmed\n", dt);
-    printf( "-----------------------------------------------\n" );    
-    deliveredtoken = dt;
-}
-
-//When message arrives, it will format it and send it back out to MB_publishMQTT
-int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
-    if (message == NULL || message->payload == NULL) {
-        printf("Received NULL message or payload\n");
-        return 0;
-    }
-
-    char *error_in = message->payload;
-    char  error_out[ errorOutput_LEN ] = "";
-    
-    // print incoming message
-    printf( "msgarrvd: error_in: <%s>\n", error_in );   
-    
-    // format error out msg
-    sprintf( error_out, "%s + Some additional text here", error_in );
-    printf( "msgarrvd: error_out: <%s>\n", error_out );   
-
-    // Create a new client to publish the error_out message
-    MQTTClient client = (MQTTClient)context;
-    MQTTClient_message pubmsg = MQTTClient_message_initializer;
-    MQTTClient_deliveryToken token2;
-
-    pubmsg.payload = error_out;
-    pubmsg.payloadlen = strlen( error_out );
-    pubmsg.qos = QoS;
-    pubmsg.retained = 0;
-
-    //Publish the error_out message on MB_publishMQTT
-    MQTTClient_publishMessage(CLIENT, topic2, &pubmsg, &token2);
-    printf("Publishing to topic %s\n", topic2);
-    
-    // Validate that message has been successfully delivered
-    int rc = MQTTClient_waitForCompletion(CLIENT, token2, timeout);
-    printf("Message with delivery token %d delivered, rc=%d\n", token2, rc);
-    printf( "Msg out:\t<%s>\n", error_out );
-
-    // Close the outgoing message queue
-    MQTTClient_freeMessage(&message);
-    MQTTClient_free(topicName);
-    
-    return 1;
-}
-
-//connlost function here
-void connlost(void *context, char *cause) {
-    printf("\nConnection lost\n");
-    printf("     cause: %s\n", cause);
 }
 
 //searchErrorCode function here
@@ -333,6 +323,11 @@ void defaultSettings() {
     }
  }
 
+//connlost function here
+void connlost(void *context, char *cause) {
+    printf("\nConnection lost\n");
+    printf("     cause: %s\n", cause);
+}
 
 //main function here
 int main(int argc, char *argv[]) {
