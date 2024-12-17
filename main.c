@@ -95,6 +95,11 @@ void delivered(void *context, MQTTClient_deliveryToken dt) {
 
 //When message arrives, it will format it and send it back out to MB_publishMQTT
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) {
+    if (message == NULL || message->payload == NULL) {
+        printf("Received NULL message or payload\n");
+        return 0;
+    }
+
     char *error_in = message->payload;
     char  error_out[ errorOutput_LEN ] = "";
     
@@ -189,8 +194,14 @@ int readingFile(char *filename) {
     char errorCode[errorCode_LEN + 1] = "";
     char errorText[errorMSG_LEN + 1] = "";
 
-    struct tbl *linklist = (struct tbl*)malloc(sizeof(struct tbl));
-    head = linklist;
+    struct tbl *lnklist = (struct tbl*)malloc(sizeof(struct tbl));
+
+    if(lnklist == NULL) {
+        printf("Memory allocation failed!");
+        exit(1);
+    }
+
+    head = lnklist;
     head -> next = NULL;
 
     fp = fopen(filename, "r");
@@ -258,6 +269,11 @@ void dateTimestamp() {
 
 //parameterYES function here
 int parameterYES(char *line) {
+
+    if(line == NULL) { //Checking validation of the input file
+        return 0;
+    }
+
     int i = 0;
 
     while (line[i] != '\0') {
