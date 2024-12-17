@@ -12,7 +12,6 @@
 #include <string.h>
 #include <MQTTClient.h> 
 #include "settingErrHandler.h" //file with array definitions and length
-//#include "send_mqtt_msg.c" //file with MQTT functions
 
 char error_field[][errorMSG_LEN] = {"", "", "", ""};
 volatile MQTTClient_deliveryToken deliveredtoken;
