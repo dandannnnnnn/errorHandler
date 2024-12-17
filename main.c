@@ -376,7 +376,7 @@ int main(int argc, char *argv[]) {
     }
 
     printf("Subscribing to topic %s for client %s using QoS%d\n\n", topic1, CLIENT, QoS);
-    MQTTClient_subscribe(CLIENT, topic1, QoS);
+    MQTTClient_subscribe(client, topic1, QoS);
 
     // Keep the program running to continue receiving and publishing messages
     for(;;) {
